@@ -1,0 +1,18 @@
+# --- Local, machine- and employer-specific content: present on every machine, never published ---
+
+# Everything inside the knowledge folder is environment-specific and stays local.
+# The folder itself, its explainer, and an empty keep-file are the only tracked parts.
+wiki/knowledge/*
+!wiki/knowledge/.gitkeep
+!wiki/knowledge/README.md
+
+# Employer/domain-specific skills stay local.
+skills/acme-*
+
+# Local voice/style specifics (names, language registers) if split out to a local file.
+wiki/writing-style.local.md
+
+# --- Usual noise ---
+.DS_Store
+*.swp
+*~
