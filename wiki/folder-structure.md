@@ -130,8 +130,9 @@ they are specific to this employer/machine and often sensitive.
 
 - The folder itself exists everywhere (tracked via a `.gitkeep`); everything inside it is ignored.
 - Create a knowledge file when a fact is durable, reusable, and bigger than the current project.
-- Keep an `INDEX.md` in the folder: one line per file, `filename — what it covers`. Append to it when
-  you add a file. It is the grep-able table of contents, so a specific fact is a lookup, not a
+- Keep an `INDEX.md` in the folder: one line per file, `filename — what it covers`. It is git-ignored
+  like the rest of the folder, so on a fresh machine it does not exist yet — create it with the first
+  knowledge file. Append to it when you add a file. It is the grep-able table of contents, so a specific fact is a lookup, not a
   directory scan. Detailed filenames plus this index are enough; do not build a heavier glossary
   until the folder is large enough to need one.
 

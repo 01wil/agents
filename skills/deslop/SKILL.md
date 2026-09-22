@@ -1,6 +1,6 @@
 ---
 name: deslop
-description: Strip AI-generated slop from code before it is committed. Use after generating or heavily editing code, before opening a PR, when reviewing a diff that feels bloated, or when a change contains defensive code, redundant comments, or type escapes that the surrounding codebase does not use. Also use when writing a throwaway script the user will paste into SSMS or a shell by hand, where too many queries and too much commentary are the slop.
+description: Strip AI-generated slop from code before it is committed. Use after generating or heavily editing code, before opening a PR, when reviewing a diff that feels bloated, or when a change contains defensive code, redundant comments, or type escapes that the surrounding codebase does not use. Also use when writing a throwaway script the user will paste into SSMS or a shell by hand, where too many queries and too much commentary are the slop. This skill is about code; for prose a person will read, use the unslop skill instead.
 ---
 
 # Deslop Code

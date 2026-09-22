@@ -1,6 +1,6 @@
 ---
 name: unslop
-description: Cut AI tells from any writing. Must always apply.
+description: Cut AI tells from prose a person will read - an email, a chat message, a commit body, a README, documentation, a status update. Use while drafting or editing any prose, and always before anything written for a person is handed over. For slop in code and diffs, use the deslop skill instead.
 ---
 
 # Unslop

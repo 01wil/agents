@@ -1,10 +1,14 @@
 ---
 name: lean
-description: 'Lean, high-signal output: lead with the next action, number multi-step work, restate state across turns, suppress tangents, give concrete time estimates, make wins visible. Turn on persistently with /lean or "lean mode" (stays until "stop lean mode"); apply to a single reply with "lean out <that>".'
+description: 'A manual switch the user throws, never something to invoke on your own initiative. Turn on only when the user says /lean or "lean mode" (persists until "stop lean mode"), or "lean out <that>" for a single reply. Reshapes your own replies: next action first, state restated each turn, tangents cut, wins visible.'
 disable-model-invocation: true
 ---
 
 # lean
+
+> `disable-model-invocation` above is honoured by Claude Code and ignored by harnesses that read
+> only `name`/`description` (opencode). The description is therefore written to deter automatic
+> invocation on its own. Do not turn this on unless the user asked for it.
 
 Lean output is not just brief. It is shaped so a reader under load can act on it immediately: the
 next action first, state restated every turn, wins made visible, everything else cut.
