@@ -9,7 +9,7 @@ A lesson learned and left in a finished session is a lesson relearned next time 
 skill closes the loop: when the work teaches something the wiki should have told you up front,
 **write it back into the wiki** so the next agent starts where this one finished.
 
-It is the maintenance half of the end-of-turn checklist in `AGENTS.md`. opencode has no daemon and no
+It is the maintenance half of the end-of-turn checklist in `AGENTS.md`. You have no daemon and no
 memory between turns — the only persistence is the files. If a lesson does not land in a file, it did
 not persist.
 

@@ -78,7 +78,7 @@ If any of these is false, leave it out.
 | Content | the loop, safety, layout, voice | facts, identifiers, traps, measured values | method, procedure, quality bar |
 | Changes when | our way of working changes | reality changes | our standards change |
 | Example | "no code before acceptance criteria" | "AppLocker blocks unsigned exes" | "how to review code for regressions" |
-| Loaded | named from `AGENTS.md` or `README.md` | on demand, per task | by opencode, by description match |
+| Loaded | named from `AGENTS.md` or `README.md` | on demand, per task | by the harness, by description match |
 
 Deciding between them:
 
@@ -100,7 +100,7 @@ edit — they have drifted before.
 > `knowledge/` files. They were environment facts wearing a skill's clothes. Both were removed;
 > the facts live once in `knowledge/`.
 
-`skills/` is the canonical location and `~/.config/opencode/skills` is a symlink to it, so skills
+`skills/` is the canonical location and each harness's skills dir is a symlink to it, so skills
 travel with the wiki and still load automatically. A skill needs no `README.md` row: it is reached by
 its `description`, which is why that description must read as trigger conditions. See the
 `writing-for-agents` skill.

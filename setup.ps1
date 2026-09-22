@@ -1,19 +1,29 @@
-# Symlink this repo into the opencode config dir (Windows PowerShell).
-# The repo is canonical; the config dir just points at it.
+# Install this repo for every agent harness on this machine (Windows PowerShell).
 #
 # Usage (may require an elevated shell or Developer Mode for symlinks):
 #   pwsh -File .\setup.ps1
+#
+# Skills are linked into ~\.claude\skills: Claude Code reads that as its personal skills dir, and
+# opencode reads the same path as its Claude-compatible global location, so one link serves both.
+# The instruction file is linked into each harness's config dir under the name it looks for.
+#
 # Re-runnable. Existing non-symlink items are backed up to <name>.bak-<timestamp>.
 
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path -Parent $MyInvocation.MyCommand.Path
-$cfg  = Join-Path $env:USERPROFILE '.config\opencode'
-New-Item -ItemType Directory -Force -Path $cfg | Out-Null
+$home_ = $env:USERPROFILE
 
-function Link-Item($name) {
-    $src = Join-Path $repo $name
-    $dst = Join-Path $cfg  $name
-    $item = Get-Item -LiteralPath $dst -ErrorAction SilentlyContinue
+if ($repo -ne (Join-Path $home_ 'agents')) {
+    Write-Host "WARNING: this clone is at $repo, but AGENTS.md resolves wiki/ and skills/ paths"
+    Write-Host "         against ~/agents. Either clone to ~/agents, or edit the path rule at the"
+    Write-Host "         top of AGENTS.md to match."
+    Write-Host ""
+}
+
+function Link-Path($src, $dst) {
+    $parent = Split-Path -Parent $dst
+    New-Item -ItemType Directory -Force -Path $parent | Out-Null
+    $item = Get-Item -LiteralPath $dst -Force -ErrorAction SilentlyContinue
     if ($item) {
         if ($item.LinkType) {
             Remove-Item -LiteralPath $dst -Force
@@ -27,8 +37,31 @@ function Link-Item($name) {
     Write-Host "linked $dst -> $src"
 }
 
-Link-Item 'AGENTS.md'
-Link-Item 'wiki'
-Link-Item 'skills'
+# Legacy links from the opencode-only layout. wiki/ is now reached by absolute path, and a second
+# skills location would register every skill twice. Only ever removes a symlink, never real files.
+foreach ($legacy in @((Join-Path $home_ '.config\opencode\wiki'), (Join-Path $home_ '.config\opencode\skills'))) {
+    $item = Get-Item -LiteralPath $legacy -Force -ErrorAction SilentlyContinue
+    if ($item -and $item.LinkType) {
+        Remove-Item -LiteralPath $legacy -Force
+        Write-Host "removed legacy link $legacy"
+    }
+}
 
-Write-Host "Done. opencode will now read AGENTS.md, wiki/, and skills/ from $repo."
+# Universal: the one skills location both Claude Code and opencode read.
+Link-Path (Join-Path $repo 'skills')    (Join-Path $home_ '.claude\skills')
+Link-Path (Join-Path $repo 'AGENTS.md') (Join-Path $home_ '.claude\CLAUDE.md')
+
+# Per-harness instruction file, only where that harness is already set up.
+$harnesses = @(
+    @{ Dir = '.config\opencode'; File = '.config\opencode\AGENTS.md' },
+    @{ Dir = '.codex';           File = '.codex\AGENTS.md'           },
+    @{ Dir = '.gemini';          File = '.gemini\GEMINI.md'          }
+)
+foreach ($h in $harnesses) {
+    if (Test-Path -LiteralPath (Join-Path $home_ $h.Dir)) {
+        Link-Path (Join-Path $repo 'AGENTS.md') (Join-Path $home_ $h.File)
+    }
+}
+
+Write-Host ""
+Write-Host "Done. Instructions and skills now come from $repo."

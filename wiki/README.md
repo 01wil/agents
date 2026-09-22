@@ -25,11 +25,12 @@ have not read it, read it first. This file only maps where knowledge lives.
 ├── wiki/
 │   ├── *.md       how work gets done      — you are told to read these
 │   └── knowledge/ what is true about THIS machine/employer — local-only, load per task
-└── skills/        how to do things well   — opencode loads these by description
+└── skills/        how to do things well   — loaded by description match
 ```
 
-`setup.sh`/`setup.ps1` symlink `~/.config/opencode/{AGENTS.md,wiki,skills}` to this repo, so the
-repo is canonical. Never edit the copies under `~/.config` — they are the same files.
+`setup.sh`/`setup.ps1` symlink this repo into each harness's config dir, so the repo stays
+canonical. Never edit the linked copies — they are the same files. Paths in these documents resolve
+against `~/agents/`, not against the config dir (`AGENTS.md`).
 
 ## Convention files
 
@@ -49,13 +50,15 @@ repo is canonical. Never edit the copies under `~/.config` — they are the same
 `knowledge/` holds what is true about this specific machine and employer: server topology, internal
 tools, environment gotchas, credentials' locations. Local-only (gitignored). Read
 [`knowledge/INDEX.md`](knowledge/INDEX.md) for what exists; on a fresh checkout the folder is
-empty except its README — that is expected. Unsure which file applies? Grep rather than guess:
+empty except its README and `INDEX.md` does not exist yet — that is expected. Create it with the
+first knowledge file. Unsure which file applies? Grep rather than guess:
 
 ```bash
 grep -ril "<server-or-table-or-tool>" wiki/knowledge/
 ```
 
-Skills need no index here — opencode loads them by their `description`.
+Skills need no index here — a harness that supports them loads them by their `description`. On one
+that does not, list `~/agents/skills/*/SKILL.md` and read what matches.
 
 ## Maintaining this folder
 

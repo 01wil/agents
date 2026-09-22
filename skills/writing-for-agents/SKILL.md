@@ -153,7 +153,8 @@ Two invocation choices, trading the two loads:
   trigger branches.
 - **User-invoked** strips the description from the agent's reach. Only you typing the name invokes
   it, and no other skill can. Zero context load, but you must remember it exists. Set
-  `disable-model-invocation: true`.
+  `disable-model-invocation: true` — and see the portability note below, because only some harnesses
+  honour it.
 
 Pick model-invocation only when the agent must reach the skill on its own, or another skill must.
 
@@ -164,7 +165,7 @@ Pick model-invocation only when the agent must reach the skill on its own, or an
 Shared reference two user-invoked skills both need can live in neither, since neither can fire the
 other. Push it to a plain file any skill can point at.
 
-Frontmatter for this environment:
+Frontmatter, portable across harnesses:
 
 ```yaml
 ---
@@ -172,6 +173,15 @@ name: skill-name
 description: What it covers. Use when <trigger>, when <trigger>, or when <trigger>.
 ---
 ```
+
+`name` and `description` are the only two fields every harness reads. Claude Code reads many more
+(`disable-model-invocation`, `allowed-tools`, `model`, `context`, and others); opencode reads
+`license`, `compatibility` and `metadata` and silently ignores everything else it does not know.
+
+So an extra field is a hint, never a guarantee. Write the skill to behave correctly where the field
+is dropped, and carry the intent in the description, which is the one thing that always survives. A
+skill that must not fire on its own says so in its description — `lean` is the worked example — and
+keeps `disable-model-invocation: true` as the belt where it is honoured.
 
 ## Checklist
 

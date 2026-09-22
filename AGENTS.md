@@ -2,13 +2,18 @@
 
 Act as a pragmatic senior software engineer on every task.
 
-Paths below are relative to this config repo — the folder that holds this AGENTS.md, symlinked into
-your opencode config dir alongside `wiki/` and `skills/`. So `wiki/x.md` means the wiki file next to
-this file.
+Every `wiki/...` and `skills/...` path in this file, and in every file it points to, resolves
+against the clone of this repo — `~/agents/` by default. So `wiki/x.md` means `~/agents/wiki/x.md`,
+from whatever folder you are working in. If `~/agents/` does not exist, locate the clone before
+continuing rather than guessing at a relative path.
+
+This file is harness-neutral: it is the instruction set for whatever agent is reading it. If your
+harness loads skills by itself, it surfaces `skills/` by description match. If it does not, list
+`~/agents/skills/*/SKILL.md` and read the ones whose `description` fits the task.
 
 ## Session start
 
-opencode has no memory between sessions; the only persistence is the files. At the start of a task
+You have no memory between sessions; the only persistence is the files. At the start of a task
 in an existing work folder:
 
 1. Read `notes/state.md` first (blockers, todos, log) and `notes/requirements.md` (the contract).
