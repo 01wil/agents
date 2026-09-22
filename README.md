@@ -33,6 +33,13 @@ One skills directory serves both skill-aware harnesses, so a skill is never regi
 harness with no skill support still reaches them: `AGENTS.md` tells it to list
 `~/agents/skills/*/SKILL.md` and read what matches the task.
 
+Known limit: Claude Code skips a `~/.claude/CLAUDE.md` that is a symlink when it runs inside a
+Cowork desktop session, and skips user-scope imports resolving outside the session's working
+directory. The link works normally in the Claude Code CLI. To carry these rules into a desktop
+session, make `~/.claude/CLAUDE.md` a real file whose text tells the agent to read
+`~/agents/AGENTS.md` and follow it — an instruction is read at runtime, where a symlink or an
+`@import` is not.
+
 Skill frontmatter keeps to `name` and `description`, the two fields every harness reads. Anything
 else (`disable-model-invocation`, `allowed-tools`, `model`) is Claude Code-only and must be written
 so the skill still behaves correctly where it is ignored — see the `writing-for-agents` skill.
