@@ -1,0 +1,14 @@
+# --- Local content: anything that must not be public lives in wiki/knowledge/ ---
+
+# Everything inside the knowledge folder is environment-specific and stays local.
+# The folder itself, its explainer, and an empty keep-file are the only tracked parts.
+wiki/knowledge/*
+!wiki/knowledge/.gitkeep
+!wiki/knowledge/README.md
+
+# Local skills live in wiki/knowledge/skills/, covered by the rule above.
+
+# --- Usual noise ---
+.DS_Store
+*.swp
+*~
