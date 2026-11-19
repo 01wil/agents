@@ -1,6 +1,6 @@
 ---
 name: destructive-operations
-description: MANDATORY safety protocol before ANY destructive or irreversible operation. Read BEFORE writing or running DELETE, UPDATE, INSERT, TRUNCATE, DROP, ALTER, MERGE, rm, mv, git reset/rebase/push --force, file overwrites, or any command that can destroy data. Also read before running ANY writing SQL against ANY server (never judge a server by its name), before using SET PARSEONLY or SET NOEXEC as a safety net, and whenever a task involves databases holding production or business-critical data.
+description: MANDATORY safety protocol before ANY destructive or irreversible operation. Read BEFORE writing or running DELETE, UPDATE, INSERT, TRUNCATE, DROP, ALTER, MERGE, rm, mv, git reset/rebase/push --force, file overwrites, or any command that can destroy data or remove access, mappings, or credentials or anything that cant be restored. Also read before running ANY writing SQL against ANY server (never judge a server by its name), before using SET PARSEONLY or SET NOEXEC as a safety net, and whenever a task involves databases holding production or business-critical data.
 ---
 
 # Destructive Operations — Mandatory Protocol
@@ -281,6 +281,7 @@ Same principle: **prove it, back it up, or don't run it.**
 | `git reset --hard`, `git clean` | Never without explicit approval; discards uncommitted work. |
 | `git push --force`, history rewrite, `git rebase` | Never without explicit approval. |
 | `git checkout -- <file>` | Discards changes — the user may have edited it. Ask. |
+| Access/connection state: `net use`, drive mappings, VPN, mounts, SSH config, cached credentials | Never remove or re-create an existing one, not even to "reconnect" or "refresh". To test, **map a second drive letter** to the same share, or use the UNC path directly: additive, and a failure costs nothing. Removing a mapping you cannot re-create yourself is a one-way door. |
 | Deleting a remote branch or tag | Never without explicit approval. |
 | `TRUNCATE`, `DROP TABLE` | Treat as maximum severity. Backup + explicit approval. |
 | `ALTER TABLE` dropping a column | Irreversible data loss. Backup + approval. |
@@ -312,6 +313,10 @@ ask before cleaning up, there may be a reason something looks odd.
 - The user asked you to hold, and you are about to run something anyway "just to check".
 - You have no backup and are about to modify data.
 - You are in the middle of exploring and improvising statements against a real table.
+- You are about to change something **you could not restore yourself** if it fails: no credentials,
+  no rights, no backup. Reversibility is the test, not whether it feels like a deletion. If an
+  additive version of the same test exists (a second mapping, a copy, a scratch object), that is the
+  only acceptable version.
 
 ---
 
