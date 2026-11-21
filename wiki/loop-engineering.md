@@ -118,6 +118,9 @@ Rules for this phase:
 - Run every acceptance criterion from phase 1 and report the actual result, per criterion.
 - For a bug fix, confirm the test fails for the original cause before the fix. A regression test
   that never went red proves nothing.
+- The proof depends on the bug. Logic, data, state, and protocol bugs get a failing test first,
+  then the fix. Purely visual bugs (spacing, colour, alignment) get before/after captures and no
+  test. A fix with no visible surface gets the test plus a short runtime transcript.
 - Report the exact commands and the exact output. Never a summary of a run that did not happen.
 - Say plainly what was not verified and why. A skipped check reported honestly is fine. A skipped
   check implied to have passed is not.

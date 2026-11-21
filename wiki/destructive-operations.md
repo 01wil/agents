@@ -291,6 +291,9 @@ Same principle: **prove it, back it up, or don't run it.**
 | Publishing / releasing — package registries, git tags, releases, deployments | Explicit approval per release. |
 | Cloud / infra changes — `terraform apply`/`destroy`, deleting or modifying cloud resources, DNS | Explicit approval; plan/preview first. |
 | Scheduled tasks, cron, service start/stop/disable, killing processes | Explicit approval. |
+| Killing a process found by matching a name, path, or argument (`pkill -f`, `pgrep \| kill`) | Never. Your own process and other sessions' servers match the pattern too. Kill only a PID you captured at spawn, or the owner of your own port after confirming its working directory is yours. |
+| The live state of a running tool: its database, settings, auth sessions | Reading and copying out are fine. Never open it read-write, never start a second server against it, never clean it up. Work on a copy, copied in, never symlinked, and never write back. |
+| Detaching a background process (`nohup`, `setsid`, `tmux`, `systemd-run`) | Only if the user asks for one that outlives the session. Detached dev servers have run for weeks and exhausted memory. Run them from your own shell so they end with the session. |
 | Permission changes — DB grants/revokes, ACLs, recursive `chmod`/`chown` | Explicit approval. |
 | Disabling monitoring, alerting, or backup jobs | Never without approval — these are the safety net. |
 | Overwriting or deleting any backup | Never. A backup is the last line. |

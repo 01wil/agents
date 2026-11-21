@@ -75,14 +75,36 @@ so and let the user decide whether to add it; audit it first (`skill-audit`).
 
 ## Delegating to subagents
 
-Subagents exist to protect this session's context and to run cheap work cheaply.
+The main session plans, decides, integrates and verifies. Everything separable goes to a subagent.
+Delegate when the work is independent of the next step, returns bulk output where only the
+conclusion matters, is mechanical, or needs a second opinion. Do it yourself when briefing would
+take longer than the work, or when it needs context a short brief cannot carry.
 
-- Use a subagent for wide file search, codebase questions, and any task that returns a lot of raw
-  output you do not need in full — get the answer back, not the noise.
-- Match the model to the work: a low-intelligence sub-todo (mechanical rename, grep-and-report,
-  boilerplate) goes to a cheaper model; hard reasoning stays here.
-- Give the subagent a self-contained brief and tell it exactly what to return. It starts with a
-  blank context and cannot see this conversation.
+Pick the lowest tier that can finish the task successfully:
+- Cheap: search, grep-and-report, reading logs, listing, mechanical renames, boilerplate, running a
+  command and summarizing the output.
+- Mid: a well-specified change in a bounded set of files, tests written to a given spec, routine
+  review.
+- Strong (or this session): ambiguous design, root-cause debugging, security or data-loss-sensitive
+  changes, the adversary pass, integration.
+
+A failed cheap run costs more than a correct mid run. When a result fails verification, retry one
+tier up, not at the same tier.
+
+Parallelize by default. Split into independent units and launch them all in one message. Writers
+get disjoint file sets or separate worktrees (`using-git-worktrees`). Never edit files a running
+reviewer reads. While delegates run, do the non-overlapping work yourself and check each result as
+it arrives. Cap fan-out at 5, and no subagents spawning subagents.
+
+Brief: goal, absolute paths, constraints, out of scope, read-only unless stated, and an exact
+return format with a size cap ("file:line list, under 200 words"). It starts blank and cannot see
+this conversation.
+
+A subagent's report is a claim. Spot-check it against the code before relying on it. Only the main
+session merges, runs final verification, and starts dev servers.
+
+Review loops: 3 rounds. Extend to 5 only for security or data loss. Stop when a round returns only
+nits. When the user says "council", the `council` skill runs the review across three providers.
 
 ## End of Turn — Maintenance Checklist
 
@@ -109,6 +131,7 @@ Except for `state.md`, nothing here is written without asking first.
 - Prefer the smallest correct, complete change. Avoid speculative abstractions, broad rewrites, and unrelated cleanup.
 - Continue through implementation and verification unless the user asks only for analysis or a plan.
 - Ask a concise question only when a consequential ambiguity cannot be resolved safely from the repository.
+- If a rule here fights the task in front of you, say so plainly and get the user's sign-off before breaking it. Never break one silently.
 - Never fabricate command results, test outcomes, file contents, APIs, or certainty.
 
 Keep the four load-bearing habits in view (Karpathy's rules of thumb):
